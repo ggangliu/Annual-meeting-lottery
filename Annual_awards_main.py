@@ -6,7 +6,7 @@ import pygame
 import random
 from pygame.locals import *
 
-fullScreen = True
+fullScreen = False
 
 #解析 人员.xlsx 文件，得到人员名单列表
 def get_name_list_from_excel(file_name):
@@ -32,7 +32,6 @@ def handle_mouse_event(index, pause_flag):
         y -= m.get_height() / 2
         if 1031 + 91 > x > 1031 and 436 + 68 > y > 436:
             pause_flag = True if pause_flag == False else False
-
             if not pause_flag:
                 pygame.mixer.music.play()
                 del name_list[index]
@@ -43,9 +42,12 @@ def handle_mouse_event(index, pause_flag):
 
     return pause_flag
 
+
 def show_name_list(name_list):
+    '''调试接口，输出当前名单'''
     for index in range(0, len(name_list)):
-        print name_list[index][0], name_list[index][1]
+        str = "%s %s" % (name_list[index][0], name_list[index][1])
+        print(str.decode('utf-8'))
 
 if __name__ == "__main__":
     job_num, job_name, name_list = get_name_list_from_excel(r'name_file.xlsx')
@@ -57,7 +59,7 @@ if __name__ == "__main__":
     else:
         screen = pygame.display.set_mode((1340, 670), 0, 32)
 
-    pygame.display.set_caption("抽奖")
+    pygame.display.set_caption("文思海辉年会抽奖程序")
     bg = 'bg.png'
     mg = 'cz.png'
 
@@ -73,25 +75,12 @@ if __name__ == "__main__":
     #pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play()
 
-    #button_image = pygame.image.load('start.png')  # 把变量myimage赋给导入的图片
-    #screen.blit(button_image, [100, 100])  # 在100,100的地方画出这个图片（100和100为左部和上部）
-
-    font = pygame.font.SysFont("SimHei", 60)
-    #font.set_bold(True)
-    text_obj = font.render(u'Ericsson ODC', True, (255, 0, 0), (0, 128, 0))
-    text_pos = text_obj.get_rect()
-    text_pos.center = (470, 300)
-    screen.blit(text_obj, text_pos)
-
-    pygame.display.update()
-
     index = random.randint(0, len(name_list) - 1)
     pause_flag = False
     while True:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 pygame.quit()
-                exit()
             elif event.type == MOUSEBUTTONDOWN:
                 pause_flag = handle_mouse_event(index, pause_flag)
 
