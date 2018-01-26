@@ -9,9 +9,11 @@ from pygame.locals import *
 fullScreen = True
 mode = 0
 mouse_scan = [(1031, 498, 116, 89), (1031, 436, 91, 68)]
-pos_scan   = [(683, 141, 683,630), (650, 130, 650, 540)]
-#解析 人员.xlsx 文件，得到人员名单列表
+pos_scan = [(683, 141, 683,630), (650, 130, 650, 540)]
+
+
 def get_name_list_from_excel(file_name):
+    '''"解析 人员.xlsx 文件，得到人员名单列表"'''
     name_list = []
     excelFile = xlrd.open_workbook(file_name)
     sheet = excelFile.sheet_by_name('Sheet1')
@@ -23,7 +25,6 @@ def get_name_list_from_excel(file_name):
         job_name = sheet.cell(row, 1).value.encode('utf-8')
         #print job_num, job_name
         name_list.append((job_num, job_name))
-
     return job_num, job_name, name_list
 
 
@@ -37,7 +38,7 @@ def handle_mouse_event(index, pause_flag):
             if not pause_flag:
                 pygame.mixer.music.play()
                 del name_list[index]
-                print len(name_list)
+                #print len(name_list)
                 #show_name_list(name_list)
             else:
                 pygame.mixer.music.stop()
@@ -49,8 +50,7 @@ def show_name_list(name_list):
     '''调试接口，输出当前名单'''
     for index in range(0, len(name_list)):
         str = "%s %s" % (name_list[index][0], name_list[index][1])
-        print(str)
-        #print(str.decode('utf-8'))
+        print(str.decode('utf-8'))
 
 if __name__ == "__main__":
     job_num, job_name, name_list = get_name_list_from_excel(r'name_file.xlsx')
@@ -69,10 +69,7 @@ if __name__ == "__main__":
         bg = 'bg.png'
         screen = pygame.display.set_mode((1340, 670), 0, 32)
 
-    pygame.display.set_caption("文思海辉年会抽奖程序")
-
-
-    #newimg = pygame.transform.scale(bg, (1024, 480))
+    pygame.display.set_caption("Annual meeting lottery")
 
     b = pygame.image.load(bg).convert()
     m = pygame.image.load(mg).convert_alpha()
@@ -92,7 +89,7 @@ if __name__ == "__main__":
                 pygame.quit()
                 sys.exit(0)
             elif event.type == MOUSEBUTTONDOWN:
-                index,pause_flag = handle_mouse_event(index, pause_flag)
+                index, pause_flag = handle_mouse_event(index, pause_flag)
 
         screen.blit(b, (0, 0))
         x, y = pygame.mouse.get_pos()
@@ -103,7 +100,7 @@ if __name__ == "__main__":
 
         if not pause_flag:
             index = random.randint(0, len(name_list)-1)
-            if pygame.mixer.music.get_busy() == False:
+            if not pygame.mixer.music.get_busy():
                 pygame.mixer.music.play()
 
         text_context = '%s %s' % (name_list[index][0], name_list[index][1])
