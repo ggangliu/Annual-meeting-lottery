@@ -9,7 +9,7 @@ from pygame.locals import *
 fullScreen = True
 mode = 0
 mouse_scan = [(1031, 498, 116, 89), (1031, 436, 91, 68)]
-pos_scan   = [(683, 151, 683,630), (650, 130, 650, 540)]
+pos_scan   = [(683, 141, 683,630), (650, 130, 650, 540)]
 #解析 人员.xlsx 文件，得到人员名单列表
 def get_name_list_from_excel(file_name):
     name_list = []
@@ -42,7 +42,7 @@ def handle_mouse_event(index, pause_flag):
             else:
                 pygame.mixer.music.stop()
 
-    return pause_flag
+    return index, pause_flag
 
 
 def show_name_list(name_list):
@@ -92,7 +92,7 @@ if __name__ == "__main__":
                 pygame.quit()
                 sys.exit(0)
             elif event.type == MOUSEBUTTONDOWN:
-                pause_flag = handle_mouse_event(index, pause_flag)
+                index,pause_flag = handle_mouse_event(index, pause_flag)
 
         screen.blit(b, (0, 0))
         x, y = pygame.mouse.get_pos()
@@ -108,14 +108,14 @@ if __name__ == "__main__":
 
         text_context = '%s %s' % (name_list[index][0], name_list[index][1])
         #print text_context
-        font = pygame.font.Font("simhei.ttf", 65)
+        font = pygame.font.Font("simhei.ttf", 80)
         text_obj = font.render(text_context.decode('utf-8'), True, (255, 255, 255), (0, 0, 0))
         text_pos = text_obj.get_rect()
         text_pos.center = (pos_scan[mode][0], pos_scan[mode][1])
         screen.blit(text_obj, text_pos)
 
         font = pygame.font.Font("simhei.ttf", 30)
-        text_obj = font.render('Ericsson ODC 祝大家鸿运'.decode('utf-8'), True, (255, 255, 255), (255, 0, 0))
+        text_obj = font.render('Ericsson ODC 祝公司蓬勃发展，祝同事万事如意'.decode('utf-8'), True, (255, 255, 255), (255, 0, 0))
         text_pos = text_obj.get_rect()
         text_pos.center = (pos_scan[mode][2], pos_scan[mode][3])
         screen.blit(text_obj, text_pos)
