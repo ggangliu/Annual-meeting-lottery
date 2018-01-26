@@ -1,1 +1,4 @@
-# Annual awards program
+# 年会抽奖小程序
+
+##从excel文件读取工号和名字列表
+##已经打包为exe，可以直接在window
